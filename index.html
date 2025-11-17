@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neil Rayu - Systems Engineer</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg-primary: #0d1b2a;
+        --bg-secondary: #1b263b;
+        --bg-card: #1b263b;
+        --accent: #778da9;
+        --accent-dim: #415a77;
+        --accent-bright: #e0e1dd;
+        --accent-glow: rgba(119, 141, 169, 0.15);
+        --text-primary: #e0e1dd;
+        --text-secondary: #778da9;
+        --border: #415a77;
+      }
+
+      body {
+        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      /* Animated background grid */
+      .grid-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(
+            rgba(65, 90, 119, 0.3) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(65, 90, 119, 0.3) 1px, transparent 1px);
+        background-size: 50px 50px;
+        opacity: 0.3;
+        z-index: 0;
+        animation: gridMove 20s linear infinite;
+      }
+
+      @keyframes gridMove {
+        0% {
+          transform: translate(0, 0);
+        }
+        100% {
+          transform: translate(50px, 50px);
+        }
+      }
+
+      .container {
+        position: relative;
+        z-index: 1;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Header/Navigation */
+      header {
+        padding: 30px 0;
+        position: sticky;
+        top: 0;
+        background: rgba(10, 14, 23, 0.9);
+        backdrop-filter: blur(10px);
+        z-index: 100;
+        border-bottom: 1px solid var(--border);
+      }
+
+      nav {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 30px;
+        list-style: none;
+      }
+
+      .nav-links a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.3s;
+        position: relative;
+      }
+
+      .nav-links a:hover {
+        color: var(--accent);
+      }
+
+      .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--accent);
+        transition: width 0.3s;
+      }
+
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      /* Hero Section */
+      .hero {
+        padding: 100px 0;
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+      }
+
+      .hero-content h1 {
+        font-size: 64px;
+        margin-bottom: 20px;
+        background: linear-gradient(
+          135deg,
+          var(--accent-bright) 0%,
+          var(--accent) 50%,
+          var(--accent-dim) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .hero-tagline {
+        font-size: 20px;
+        color: var(--text-secondary);
+        margin-bottom: 30px;
+        max-width: 600px;
+      }
+
+      .hero-description {
+        font-size: 18px;
+        color: var(--text-secondary);
+        margin-bottom: 40px;
+        max-width: 700px;
+        line-height: 1.8;
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 12px 30px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 16px;
+        transition: all 0.3s;
+        display: inline-block;
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: var(--bg-primary);
+        font-weight: 600;
+        border: 2px solid var(--accent);
+      }
+
+      .btn-primary:hover {
+        background: transparent;
+        color: var(--accent);
+        transform: translateY(-2px);
+      }
+
+      .btn-secondary {
+        border: 2px solid var(--accent);
+        color: var(--accent);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(100, 255, 218, 0.1);
+        transform: translateY(-2px);
+      }
+
+      /* Section styling */
+      section {
+        padding: 80px 0;
+      }
+
+      .section-title {
+        font-size: 36px;
+        margin-bottom: 15px;
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .section-subtitle {
+        color: var(--text-secondary);
+        margin-bottom: 50px;
+        font-size: 18px;
+      }
+
+      /* About Section */
+      .about-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 50px;
+        align-items: center;
+      }
+
+      .about-text {
+        color: var(--text-secondary);
+        font-size: 17px;
+        line-height: 1.8;
+      }
+
+      .about-text p {
+        margin-bottom: 20px;
+      }
+
+      .focus-areas {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-top: 30px;
+      }
+
+      .focus-item {
+        background: var(--bg-card);
+        padding: 15px;
+        padding-right: 60px;
+        border-radius: 6px;
+        border-left: 3px solid var(--accent);
+        font-size: 14px;
+        transition: transform 0.3s;
+        position: relative;
+      }
+
+      .focus-item:hover {
+        transform: translateX(5px);
+      }
+
+      .focus-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 32px;
+        height: 32px;
+        background: var(--accent);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        color: var(--bg-primary);
+      }
+
+      .profile-card {
+        background: var(--bg-card);
+        padding: 30px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        text-align: center;
+      }
+
+      .profile-img-placeholder {
+        width: 200px;
+        height: 200px;
+        border-radius: 8px;
+        background: linear-gradient(
+          135deg,
+          var(--accent-dim) 0%,
+          var(--accent) 100%
+        );
+        margin: 0 auto 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: var(--bg-primary);
+        font-weight: 600;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .stat {
+        text-align: center;
+      }
+
+      .stat-number {
+        font-size: 28px;
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .stat-label {
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+
+      /* Projects Section */
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 30px;
+      }
+
+      .project-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 30px;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+      }
+
+      .project-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(
+          90deg,
+          var(--accent) 0%,
+          var(--accent-dim) 100%
+        );
+        transform: scaleX(0);
+        transition: transform 0.3s;
+      }
+
+      .project-card:hover::before {
+        transform: scaleX(1);
+      }
+
+      .project-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent);
+      }
+
+      .project-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 15px;
+      }
+
+      .project-title {
+        font-size: 22px;
+        color: var(--text-primary);
+        margin-bottom: 10px;
+      }
+
+      .project-description {
+        color: var(--text-secondary);
+        margin-bottom: 20px;
+        line-height: 1.7;
+      }
+
+      .project-tech {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .tech-tag {
+        background: var(--accent-glow);
+        color: var(--accent);
+        padding: 5px 12px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-family: 'Courier New', monospace;
+      }
+
+      /* Experience Section */
+      .experience-timeline {
+        position: relative;
+        padding-left: 40px;
+      }
+
+      .experience-timeline::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--border);
+      }
+
+      .experience-item {
+        position: relative;
+        margin-bottom: 50px;
+        padding: 25px;
+        background: var(--bg-card);
+        border-radius: 8px;
+        border: 1px solid var(--border);
+      }
+
+      .experience-item::before {
+        content: '';
+        position: absolute;
+        left: -47px;
+        top: 30px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--accent);
+        border: 3px solid var(--bg-primary);
+      }
+
+      .experience-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .experience-title {
+        font-size: 20px;
+        color: var(--text-primary);
+      }
+
+      .experience-company {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      .experience-date {
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+
+      .experience-description {
+        color: var(--text-secondary);
+        line-height: 1.8;
+      }
+
+      .experience-description li {
+        margin-bottom: 10px;
+        margin-left: 20px;
+      }
+
+      /* Blog Section */
+      .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+
+      .blog-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+        transition: all 0.3s;
+      }
+
+      .blog-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent);
+      }
+
+      .blog-img-placeholder {
+        width: 100%;
+        height: 200px;
+        background: linear-gradient(
+          135deg,
+          var(--accent-dim) 0%,
+          var(--bg-card) 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+
+      .blog-content {
+        padding: 25px;
+      }
+
+      .blog-date {
+        color: var(--accent);
+        font-size: 13px;
+        margin-bottom: 10px;
+      }
+
+      .blog-title {
+        font-size: 20px;
+        color: var(--text-primary);
+        margin-bottom: 10px;
+      }
+
+      .blog-excerpt {
+        color: var(--text-secondary);
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      /* Contact Section */
+      .contact-content {
+        max-width: 700px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .contact-text {
+        color: var(--text-secondary);
+        font-size: 18px;
+        margin-top: 30px;
+        margin-bottom: 40px;
+        line-height: 1.8;
+      }
+
+      .contact-links {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
+        margin-bottom: 40px;
+      }
+
+      .contact-link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 20px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        text-decoration: none;
+        color: var(--text-secondary);
+        transition: all 0.3s;
+        min-width: 150px;
+      }
+
+      .contact-link:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        transform: translateY(-3px);
+      }
+
+      .contact-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--accent);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        color: var(--bg-primary);
+      }
+
+      /* Footer */
+      footer {
+        padding: 40px 0;
+        text-align: center;
+        border-top: 1px solid var(--border);
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .hero-content h1 {
+          font-size: 42px;
+        }
+
+        .about-content {
+          grid-template-columns: 1fr;
+        }
+
+        .nav-links {
+          gap: 15px;
+        }
+
+        .projects-grid,
+        .blog-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .focus-areas {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-background"></div>
+
+    <header>
+      <div class="container">
+        <nav>
+          <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container">
+          <div class="hero-content">
+            <h1>Neil Rayu</h1>
+            <p class="hero-tagline">
+              Systems Engineer | Firmware Developer | Security Researcher
+            </p>
+            <p class="hero-description">
+              Building secure, high-performance systems from silicon to
+              software. Focused on low-level infrastructure, embedded security,
+              and next-generation compute architectures.
+            </p>
+            <div class="cta-buttons">
+              <a href="#projects" class="btn btn-primary">View My Work</a>
+              <a
+                href="YOUR_BLOG_URL_HERE"
+                class="btn btn-secondary"
+                target="_blank"
+                >Read My Blog</a
+              >
+              <a href="./Neil_Rayu_Resume.pdf" class="btn btn-secondary"
+                >Download Resume</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="container">
+          <h2 class="section-title">About Me</h2>
+          <p class="section-subtitle">
+            Building the infrastructure of tomorrow
+          </p>
+
+          <div class="about-content">
+            <div class="about-text">
+              <p>
+                I'm a junior studying Computer Engineering at UIUC with a
+                passion for low-level systems, firmware development, and
+                cybersecurity. My work spans from FPGA design to kernel
+                development, with a focus on building secure, performant
+                infrastructure at scale.
+              </p>
+              <p>
+                Currently interning at Sandia National Labs on embedded security
+                systems, and working with the FAST Lab on CXL memory
+                architectures. I'm drawn to challenges that sit at the
+                hardware-software boundary—where optimization matters most and
+                security is paramount.
+              </p>
+              <p>
+                Looking ahead, I'm excited about the convergence of specialized
+                compute (GPUs, accelerators) and rack-scale infrastructure.
+                Whether it's through graduate research or industry positions at
+                companies pushing the boundaries of systems architecture, I want
+                to help shape the next generation of computing platforms.
+              </p>
+
+              <div class="focus-areas">
+                <div class="focus-item">
+                  Firmware & Embedded Systems
+                  <div class="focus-icon">
+                    <img src="icons/router.svg" alt="firmware" />
+                  </div>
+                </div>
+                <div class="focus-item">
+                  Low-Level Security
+                  <div class="focus-icon">
+                    <img src="icons/globe-lock.svg" alt="globe-lock" />
+                  </div>
+                </div>
+                <div class="focus-item">
+                  OS & Kernel Development
+                  <div class="focus-icon">
+                    <img src="icons/laptop.svg" alt="os-kernel" />
+                  </div>
+                </div>
+                <div class="focus-item">
+                  Hardware/Software Co-Design
+                  <div class="focus-icon">
+                    <img src="icons/cpu.svg" alt="cpu" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="profile-card">
+              <div class="profile-img-placeholder">
+                <img src="images/Adobe Express - file (1).jpg" alt="Me" />
+              </div>
+              <div class="stats">
+                <div class="stat">
+                  <div class="stat-number">3.91</div>
+                  <div class="stat-label">GPA</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-number">2027</div>
+                  <div class="stat-label">Graduation</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-number">3</div>
+                  <div class="stat-label">Research Labs</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-number">10+</div>
+                  <div class="stat-label">Projects</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="experience">
+        <div class="container">
+          <h2 class="section-title">Experience</h2>
+          <p class="section-subtitle">Where I've worked and what I've built</p>
+
+          <div class="experience-timeline">
+            <div class="experience-item">
+              <div class="experience-header">
+                <div>
+                  <div class="experience-title">
+                    Center for Cyber Defenders Intern
+                  </div>
+                  <div class="experience-company">
+                    Sandia National Laboratories
+                  </div>
+                </div>
+                <div class="experience-date">May 2025 – Present</div>
+              </div>
+              <div class="experience-description">
+                <ul>
+                  <li>
+                    Developing low-level C firmware for custom embedded security
+                    testbed with hardware interfacing and real-time debugging
+                  </li>
+                  <li>
+                    Designed and verified FPGA logic in SystemVerilog through
+                    simulation, synthesis, and timing closure
+                  </li>
+                  <li>
+                    Integrating hardware/software co-design principles for
+                    secure embedded systems
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="experience-item">
+              <div class="experience-header">
+                <div>
+                  <div class="experience-title">
+                    Cybersecurity Systems Engineering Intern
+                  </div>
+                  <div class="experience-company">
+                    Information Trust Institute
+                  </div>
+                </div>
+                <div class="experience-date">May 2024 – May 2025</div>
+              </div>
+              <div class="experience-description">
+                <ul>
+                  <li>
+                    Enhanced Linux kernel performance by migrating access
+                    logging from linked list to RCU-based hash table, achieving
+                    10x speedup
+                  </li>
+                  <li>
+                    Performed multi-threaded kernel trace analysis to detect
+                    anomalous activity
+                  </li>
+                  <li>
+                    Strengthened threat detection heuristics within Linux kernel
+                    environment
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="experience-item">
+              <div class="experience-header">
+                <div>
+                  <div class="experience-title">Cybersecurity Researcher</div>
+                  <div class="experience-company">
+                    NCSA – National Center for Supercomputing Applications
+                  </div>
+                </div>
+                <div class="experience-date">Sep 2024 – Jan 2025</div>
+              </div>
+              <div class="experience-description">
+                <ul>
+                  <li>
+                    Explored Post-Quantum Cryptography integration into Linux
+                    kernel TLS subsystem
+                  </li>
+                  <li>
+                    Evaluated PQC in OpenSSL networking libraries, benchmarking
+                    throughput and latency impacts
+                  </li>
+                  <li>
+                    Focused on performance tradeoffs and memory/resource
+                    management
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects">
+        <div class="container">
+          <h2 class="section-title">Featured Projects</h2>
+          <p class="section-subtitle">Systems I've built from the ground up</p>
+
+          <div class="projects-grid">
+            <a href="YOUR_GITHUB_LINK" class="project-card" target="_blank">
+              <div class="project-header">
+                <div class="project-title">Custom RISC-V Operating System</div>
+              </div>
+              <p class="project-description">
+                Built a multi-threaded, preemptive OS from scratch with virtual
+                memory, process scheduling, and system calls. Developed custom
+                kernel-level File Integrity Monitoring system that earned 4th
+                place in competitive design competition.
+              </p>
+              <div class="project-tech">
+                <span class="tech-tag">C</span>
+                <span class="tech-tag">RISC-V</span>
+                <span class="tech-tag">QEMU</span>
+                <span class="tech-tag">OS Design</span>
+              </div>
+            </a>
+
+            <a href="YOUR_GITHUB_LINK" class="project-card" target="_blank">
+              <div class="project-header">
+                <div class="project-title">
+                  Real-Time Sign Language Translation
+                </div>
+              </div>
+              <p class="project-description">
+                Co-designed real-time embedded system for sign language
+                translation. Achieved 12ms inference latency (80 FPS) by
+                offloading custom CNN from Raspberry Pi to FPGA accelerator
+                using optimized HLS modules.
+              </p>
+              <div class="project-tech">
+                <span class="tech-tag">FPGA</span>
+                <span class="tech-tag">Vivado HLS</span>
+                <span class="tech-tag">C++</span>
+                <span class="tech-tag">Embedded ML</span>
+              </div>
+            </a>
+
+            <a href="YOUR_GITHUB_LINK" class="project-card" target="_blank">
+              <div class="project-header">
+                <div class="project-title">CXL Memory Compression</div>
+              </div>
+              <p class="project-description">
+                Implementing TLB to support zswap-inspired memory compression
+                for CXL-attached memory. Evaluating compression strategies on
+                Intel Agilex 7 FPGAs with focus on kernel integration and
+                dynamic page management.
+              </p>
+              <div class="project-tech">
+                <span class="tech-tag">CXL</span>
+                <span class="tech-tag">FPGA</span>
+                <span class="tech-tag">Linux Kernel</span>
+                <span class="tech-tag">Memory Systems</span>
+              </div>
+            </a>
+
+            <a href="YOUR_GITHUB_LINK" class="project-card" target="_blank">
+              <div class="project-header">
+                <div class="project-title">Embedded Cryptographic System</div>
+              </div>
+              <p class="project-description">
+                Developing secure embedded cryptographic system in Rust for
+                MITRE eCTF 2025 competition. Implementing AEAD encryption to
+                secure satellite TV transmissions with focus on embedded
+                security best practices.
+              </p>
+              <div class="project-tech">
+                <span class="tech-tag">Rust</span>
+                <span class="tech-tag">Cryptography</span>
+                <span class="tech-tag">Embedded</span>
+                <span class="tech-tag">Security</span>
+              </div>
+            </a>
+
+            <!-- Placeholder for more projects -->
+            <a href="#" class="project-card">
+              <div class="project-header">
+                <div class="project-title">[Add Your Project Here]</div>
+              </div>
+              <p class="project-description">
+                Description of your project goes here. Focus on the technical
+                challenges, your approach, and the impact or results achieved.
+              </p>
+              <div class="project-tech">
+                <span class="tech-tag">Tech</span>
+                <span class="tech-tag">Stack</span>
+              </div>
+            </a>
+
+            <a href="#" class="project-card">
+              <div class="project-header">
+                <div class="project-title">[Add Your Project Here]</div>
+              </div>
+              <p class="project-description">
+                Description of your project goes here. Focus on the technical
+                challenges, your approach, and the impact or results achieved.
+              </p>
+              <div class="project-tech">
+                <span class="tech-tag">Tech</span>
+                <span class="tech-tag">Stack</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="blog">
+        <div class="container">
+          <h2 class="section-title">Blog & Writing</h2>
+          <p class="section-subtitle">
+            Thoughts on systems, firmware, and low-level engineering
+          </p>
+
+          <div class="blog-grid">
+            <div class="blog-card">
+              <div class="blog-img-placeholder">
+                [Blog Post Image 1]<br />Featured image 400x200px
+              </div>
+              <div class="blog-content">
+                <div class="blog-date">Coming Soon</div>
+                <h3 class="blog-title">[Your Blog Post Title]</h3>
+                <p class="blog-excerpt">
+                  Add your blog posts here. Consider writing about your
+                  projects, technical deep-dives, or lessons learned. Link to
+                  Medium, Dev.to, or your own blog platform.
+                </p>
+              </div>
+            </div>
+
+            <div class="blog-card">
+              <div class="blog-img-placeholder">
+                [Blog Post Image 2]<br />Featured image 400x200px
+              </div>
+              <div class="blog-content">
+                <div class="blog-date">Coming Soon</div>
+                <h3 class="blog-title">[Your Blog Post Title]</h3>
+                <p class="blog-excerpt">
+                  Technical writing is a great way to solidify your
+                  understanding and build your brand. Share what you're learning
+                  in your research and internships.
+                </p>
+              </div>
+            </div>
+
+            <div class="blog-card">
+              <div class="blog-img-placeholder">
+                [Blog Post Image 3]<br />Featured image 400x200px
+              </div>
+              <div class="blog-content">
+                <div class="blog-date">Coming Soon</div>
+                <h3 class="blog-title">[Your Blog Post Title]</h3>
+                <p class="blog-excerpt">
+                  Topics could include: kernel development, FPGA workflows,
+                  embedded security, memory architectures, or your experience at
+                  Sandia/ITI/NCSA.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="container">
+          <h2 class="section-title">Get In Touch</h2>
+          <div class="contact-content">
+            <p class="contact-text">
+              I'm always interested in discussing systems architecture, firmware
+              development, and opportunities in GPU computing and rack-scale
+              infrastructure. Whether it's about potential collaborations,
+              internships, or just talking tech—feel free to reach out.
+            </p>
+
+            <div class="contact-links">
+              <a href="mailto:neilrayu@gmail.com" class="contact-link">
+                <div class="contact-icon">
+                  <img src="icons/mail.svg" alt="Email Icon" />
+                </div>
+                <div>Email</div>
+              </a>
+              <a
+                href="https://linkedin.com/in/neil-rayu"
+                class="contact-link"
+                target="_blank"
+              >
+                <div class="contact-icon">
+                  <img src="icons/linkedin.svg" alt="LinkedIn Icon" />
+                </div>
+                <div>LinkedIn</div>
+              </a>
+              <a
+                href="https://github.com/Neil-Rayu"
+                class="contact-link"
+                target="_blank"
+              >
+                <div class="contact-icon">
+                  <img src="icons/github.svg" alt="GitHub Icon" />
+                </div>
+                <div>GitHub</div>
+              </a>
+            </div>
+
+            <a href="./Neil_Rayu_Resume.pdf" class="btn btn-primary"
+              >Download Full Resume</a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>© 2025 Neil Rayu. Built with passion for low-level systems.</p>
+        <p style="margin-top: 10px; font-size: 12px">
+          Designed & Developed by Neil Rayu
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // Smooth scrolling for navigation links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+            });
+          }
+        });
+      });
+
+      // Add fade-in animation on scroll
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px',
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, observerOptions);
+
+      // Observe all sections and cards
+      document
+        .querySelectorAll(
+          'section, .project-card, .blog-card, .experience-item'
+        )
+        .forEach((el) => {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(20px)';
+          el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          observer.observe(el);
+        });
+
+      // Header background on scroll
+      const header = document.querySelector('header');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          header.style.background = 'rgba(10, 14, 23, 0.95)';
+        } else {
+          header.style.background = 'rgba(10, 14, 23, 0.9)';
+        }
+      });
+    </script>
+  </body>
+</html>
