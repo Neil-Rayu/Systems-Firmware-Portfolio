@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RTSL - Real Time Sign Language</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
+        color: #e0e1dd;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      header {
+        text-align: center;
+        padding: 3rem 0 2rem;
+        border-bottom: 2px solid #415a77;
+        margin-bottom: 3rem;
+      }
+
+      h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #e0e1dd;
+        margin-bottom: 0.5rem;
+        letter-spacing: -1px;
+      }
+
+      .subtitle {
+        font-size: 1.1rem;
+        color: #778da9;
+        margin-bottom: 1.5rem;
+      }
+
+      .team {
+        font-size: 0.95rem;
+        color: #778da9;
+      }
+
+      .carousel-container {
+        background: rgba(27, 38, 59, 0.6);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(65, 90, 119, 0.3);
+        position: relative;
+      }
+
+      .slide-wrapper {
+        position: relative;
+        width: 100%;
+        padding-top: 42.1875%; /* 16:9 Aspect Ratio reduced by 25% */
+        overflow: hidden;
+        border-radius: 12px;
+        background: #0d1b2a;
+      }
+
+      .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .slide.active {
+        display: flex;
+        animation: fadeIn 0.5s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .slide img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+
+      .placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #778da9;
+        font-size: 1.2rem;
+        text-align: center;
+        padding: 2rem;
+      }
+
+      .placeholder-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+      }
+
+      .controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #415a77;
+        gap: 1rem;
+      }
+
+      button {
+        background: #415a77;
+        color: #e0e1dd;
+        border: none;
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+
+      button:hover:not(:disabled) {
+        background: #778da9;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(119, 141, 169, 0.3);
+      }
+
+      button:disabled {
+        background: #1b263b;
+        color: #415a77;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .slide-indicator {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: center;
+        flex: 1;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #415a77;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .dot:hover {
+        background: #778da9;
+      }
+
+      .dot.active {
+        background: #778da9;
+        width: 12px;
+        height: 12px;
+        box-shadow: 0 0 8px rgba(119, 141, 169, 0.5);
+      }
+
+      .slide-counter {
+        color: #778da9;
+        font-size: 0.95rem;
+        margin: 0 1rem;
+        white-space: nowrap;
+      }
+
+      .download-section {
+        text-align: center;
+        padding: 2rem;
+        background: rgba(27, 38, 59, 0.6);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(65, 90, 119, 0.3);
+      }
+
+      .download-section h2 {
+        color: #e0e1dd;
+        margin-bottom: 1rem;
+      }
+
+      .download-section p {
+        color: #778da9;
+        margin-bottom: 1.5rem;
+      }
+
+      .download-btn {
+        background: linear-gradient(135deg, #415a77 0%, #778da9 100%);
+        padding: 1rem 3rem;
+        font-size: 1.1rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .download-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(119, 141, 169, 0.4);
+      }
+
+      footer {
+        text-align: center;
+        padding: 2rem;
+        color: #778da9;
+        font-size: 0.9rem;
+        margin-top: 3rem;
+      }
+
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2rem;
+        }
+
+        .controls {
+          flex-wrap: wrap;
+        }
+
+        button {
+          padding: 0.6rem 1.5rem;
+          font-size: 0.9rem;
+        }
+
+        .carousel-container {
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Real Time Sign Language</h1>
+        <p class="subtitle">FPGA-Accelerated Sign Language Recognition</p>
+        <p class="team">Neil Rayu, Neil Deo, Ved Vyas</p>
+      </header>
+
+      <div class="carousel-container">
+        <div class="slide-wrapper">
+          <!-- Slide 1 -->
+          <div class="slide active">
+            <div class="placeholder">
+              <div class="placeholder-icon">📊</div>
+              <div>Slide 1</div>
+              <div style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.7">
+                Replace with your slide image
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="slide">
+            <div class="placeholder">
+              <div class="placeholder-icon">📊</div>
+              <div>Slide 2</div>
+              <div style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.7">
+                Replace with your slide image
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="slide">
+            <div class="placeholder">
+              <div class="placeholder-icon">📊</div>
+              <div>Slide 3</div>
+              <div style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.7">
+                Replace with your slide image
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 4 -->
+          <div class="slide">
+            <div class="placeholder">
+              <div class="placeholder-icon">📊</div>
+              <div>Slide 4</div>
+              <div style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.7">
+                Replace with your slide image
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 5 -->
+          <div class="slide">
+            <div class="placeholder">
+              <div class="placeholder-icon">📊</div>
+              <div>Slide 5</div>
+              <div style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.7">
+                Replace with your slide image
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 6 -->
+          <div class="slide">
+            <div class="placeholder">
+              <div class="placeholder-icon">📊</div>
+              <div>Slide 6</div>
+              <div style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.7">
+                Replace with your slide image
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 7 -->
+          <div class="slide">
+            <div class="placeholder">
+              <div class="placeholder-icon">📊</div>
+              <div>Slide 7</div>
+              <div style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.7">
+                Replace with your slide image
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 8 -->
+          <div class="slide">
+            <div class="placeholder">
+              <div class="placeholder-icon">📊</div>
+              <div>Slide 8</div>
+              <div style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.7">
+                Replace with your slide image
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 1rem;
+              flex: 1;
+              justify-content: center;
+            "
+          >
+            <div class="slide-indicator" id="indicator"></div>
+            <div class="slide-counter" id="counter">1 / 8</div>
+          </div>
+          <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+        </div>
+      </div>
+
+      <div class="download-section">
+        <h2>Lab Report</h2>
+        <p>
+          Download the complete 479 Lab 3 Report with detailed technical
+          specifications, results, and analysis.
+        </p>
+        <button class="download-btn" onclick="downloadReport()">
+          <span>📄</span>
+          Download Lab Report (PDF)
+        </button>
+      </div>
+
+      <footer>
+        <p>ECE 479 - Real Time Sign Language Recognition</p>
+        <p>University of Illinois Urbana-Champaign | Spring 2025</p>
+      </footer>
+    </div>
+
+    <script>
+      // Array of slide image URLs - replace these with your actual image URLs
+      const slideImages = [
+        'project_images/slide1.png', // Slide 1 - add your image URL here
+        'project_images/slide2.png', // Slide 2
+        'project_images/slide3.png', // Slide 3
+        'project_images/slide4.png', // Slide 4
+        'project_images/slide5.png', // Slide 5
+        'project_images/slide6.png', // Slide 6
+        'project_images/slide7.png', // Slide 7
+        'project_images/slide8.png', // Slide 8
+      ];
+
+      let currentSlide = 0;
+      const slides = document.querySelectorAll('.slide');
+      const totalSlides = slides.length;
+
+      // Load images if URLs are provided
+      function loadImages() {
+        slides.forEach((slide, index) => {
+          if (slideImages[index]) {
+            const placeholder = slide.querySelector('.placeholder');
+            const img = document.createElement('img');
+            img.src = slideImages[index];
+            img.alt = `Slide ${index + 1}`;
+            img.onerror = () => {
+              console.error(`Failed to load image for slide ${index + 1}`);
+            };
+            slide.innerHTML = '';
+            slide.appendChild(img);
+          }
+        });
+      }
+
+      function showSlide(n) {
+        slides.forEach((slide) => slide.classList.remove('active'));
+        slides[n].classList.add('active');
+
+        document.getElementById('prevBtn').disabled = n === 0;
+        document.getElementById('nextBtn').disabled = n === totalSlides - 1;
+
+        updateIndicator();
+        updateCounter();
+      }
+
+      function changeSlide(direction) {
+        currentSlide += direction;
+        if (currentSlide < 0) currentSlide = 0;
+        if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+        showSlide(currentSlide);
+      }
+
+      function updateIndicator() {
+        const indicator = document.getElementById('indicator');
+        indicator.innerHTML = '';
+        for (let i = 0; i < totalSlides; i++) {
+          const dot = document.createElement('div');
+          dot.className = 'dot' + (i === currentSlide ? ' active' : '');
+          dot.onclick = () => {
+            currentSlide = i;
+            showSlide(currentSlide);
+          };
+          indicator.appendChild(dot);
+        }
+      }
+
+      function updateCounter() {
+        document.getElementById('counter').textContent = `${
+          currentSlide + 1
+        } / ${totalSlides}`;
+      }
+
+      function downloadReport() {
+        // Create a temporary link element and trigger download
+        const link = document.createElement('a');
+        link.href = './RTSL.pdf';
+        link.download = 'RTSL.pdf';
+        link.click();
+      }
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') changeSlide(-1);
+        if (e.key === 'ArrowRight') changeSlide(1);
+      });
+
+      // Initialize
+      loadImages();
+      updateIndicator();
+      updateCounter();
+    </script>
+  </body>
+</html>
